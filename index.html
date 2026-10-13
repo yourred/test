@@ -1,1 +1,53 @@
-<!doctype html><title>Подготовка сайта</title>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Прототип витрины продуктов и услуг для бизнеса по жизненным ситуациям">
+  <title>Сервисы для бизнеса — жизненные ситуации</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23005BFF'/%3E%3Cpath d='M17 21h30l-5 7H22zm4 11h22l-5 7H26zm6 11h11l-4 6h-3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="cards-only">
+    <section class="catalog" id="situations">
+      <div class="catalog-toolbar">
+        <label class="version-control" for="groupingVersion">
+          <span>Версия группировки</span>
+          <select id="groupingVersion">
+            <option value="current">Текущая версия</option>
+            <option value="new">Новая версия</option>
+          </select>
+        </label>
+        <label class="visibility-toggle" id="showChangesWrapper" for="showChanges" hidden>
+          <span>Показывать изменения</span>
+          <input type="checkbox" id="showChanges" checked>
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+        </label>
+        <label class="visibility-toggle" for="showDisabledProducts">
+          <span>Показывать выключенные продукты</span>
+          <input type="checkbox" id="showDisabledProducts" checked>
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+        </label>
+      </div>
+      <div class="change-legend" id="changeLegend" hidden>
+        <span class="legend-title">Изменения в новой версии</span>
+        <span class="legend-item"><i class="legend-swatch changed"></i>Изменено название или состав</span>
+        <span class="legend-item"><i class="legend-swatch new"></i>Новая карточка</span>
+      </div>
+      <div class="situation-grid" id="situationGrid"></div>
+    </section>
+  </main>
+
+  <div class="backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <div><span class="eyebrow">Подборка решений</span><h2 id="drawerTitle"></h2><p id="drawerSubtitle"></p></div>
+      <button class="close" id="closeDrawer" aria-label="Закрыть">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

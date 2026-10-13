@@ -1,0 +1,318 @@
+const currentSituations = [
+  {id:'similar',title:'Компании, похожие на вашу, выбирают',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
+  {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы']},
+  {id:'money',title:'Управлять деньгами',subtitle:'Счета, карты, наличные и управление ликвидностью',accent:'#3261C8',groups:['Продукты и сервисы']},
+  {id:'sales',title:'Начать или увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы']},
+  {id:'accounting',title:'Вести учет, налоги и документы',subtitle:'Бухгалтерия, отчётность, документооборот и электронная подпись',accent:'#119F87',groups:['Продукты и сервисы']},
+  {id:'growth',title:'Расширить бизнес',subtitle:'Закупки, развитие, доставка и интеллектуальная собственность',accent:'#E0527D',groups:['Продукты и сервисы']},
+  {id:'foreign',title:'Начать работать за рубежом',subtitle:'Партнёры, контракты, валютные риски, таможня и логистика',accent:'#167FA4',groups:['Продукты и сервисы']},
+  {id:'funding',title:'Получить финансирование на развитие',subtitle:'Кредиты и гарантии для текущих задач и роста',accent:'#2067B8',groups:['Продукты и сервисы']},
+  {id:'savings',title:'Сохранить и приумножить деньги',subtitle:'Депозиты, остатки, резервы и инвестиционные решения',accent:'#3261C8',groups:['Продукты и сервисы']},
+  {id:'team',title:'Сформировать команду',subtitle:'Сотрудники, исполнители, зарплата, здоровье и командировки',accent:'#E6822D',groups:['Продукты и сервисы']},
+  {id:'protect',title:'Защитить бизнес',subtitle:'Проверки, риски, страхование и правовая поддержка',accent:'#5A6477',groups:['Продукты и сервисы']},
+  {id:'change',title:'Начать или изменить бизнес',subtitle:'Счёт, регистрационные изменения и новый формат работы',accent:'#9A5CDA',groups:['Продукты и сервисы']}
+];
+
+const newSituations = [
+  {id:'similar',title:'Компании, похожие на вашу, выбирают',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
+  {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Добавлена «Самозанятость» из «Начать или изменить бизнес». Из «Управлять деньгами» перенесены «Мультиконтроль» и «Корпоративное управление»'},
+  {id:'sales',title:'Начать и увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Начать или увеличить продажи» → «Начать и увеличить продажи»'},
+  {id:'savings',title:'Сохранить и приумножить деньги',subtitle:'Депозиты, остатки, резервы и инвестиционные решения',accent:'#3261C8',groups:['Продукты и сервисы']},
+  {id:'money',title:'Управлять деньгами',subtitle:'Счета, карты, наличные и управление ликвидностью',accent:'#3261C8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Добавлен «Новый счёт» из «Начать или изменить бизнес». Исключены «Мультиконтроль» и «Корпоративное управление» — они перенесены в ежедневную работу'},
+  {id:'growth',title:'Расширить бизнес',subtitle:'Закупки, развитие, доставка и интеллектуальная собственность',accent:'#E0527D',groups:['Продукты и сервисы']},
+  {id:'accounting',title:'Вести учёт и платить налоги',subtitle:'Бухгалтерия, налоговые режимы, отчётность и консультации',accent:'#119F87',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Вести учет, налоги и документы» → «Вести учёт и платить налоги». Исключены документы, ЭДО, счета-фактуры и три сервиса КЭП'},
+  {id:'funding',title:'Получить финансирование на развитие',subtitle:'Кредиты и гарантии для текущих задач и роста',accent:'#2067B8',groups:['Продукты и сервисы']},
+  {id:'documents',title:'Работать с документами и электронной подписью',subtitle:'Документооборот, счета-фактуры, регистрационные сведения и КЭП',accent:'#168C78',groups:['Продукты и сервисы'],changeType:'new',changeNote:'Из «Вести учет, налоги и документы» перенесены: Конструктор документов, ЭДО, Счета-фактуры и три сервиса КЭП. Из «Начать или изменить бизнес» — изменения в ЕГРИП и ЕГРЮЛ'},
+  {id:'foreign',title:'Работа с зарубежными партнёрами',subtitle:'Партнёры, контракты, валютные риски, таможня и логистика',accent:'#167FA4',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Начать работать за рубежом» → «Работа с зарубежными партнёрами»'},
+  {id:'team',title:'Забота о команде',subtitle:'Сотрудники, исполнители, зарплата, здоровье и командировки',accent:'#E6822D',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Сформировать команду» → «Забота о команде»'},
+  {id:'protect',title:'Защитить бизнес',subtitle:'Проверки, риски, страхование и правовая поддержка',accent:'#5A6477',groups:['Продукты и сервисы']}
+];
+
+const raw = `
+1С:Директ-Банк|Интеграционные сервисы|1
+1С:Касса|Продажи|0|Учёт товаров и рабочие места кассиров для малой розничной торговли
+Мультиконтроль|Группам компаний|1|Акцепт распоряжений и мониторинг счетов подконтрольных компаний
+Интернет-эквайринг|Продажи|1|Приём платежей на своей цифровой платформе
+SoftPos|Продажи|1
+Торговый эквайринг|Продажи|1|Приём платежей банковскими картами
+ВТБ-касса|Продажи|1
+Автоматическая депозитная машина|Финансовые услуги|1
+Онлайн-налог для АУСН|Бухгалтерия и учёт|1|Сервис для работы на налоговом режиме АУСН
+Бивалютный депозит|Инструменты ВЭД|0|Повышенная ставка с выбором валюты возврата банком
+Брокерский счет|Счета и карты|0
+Бизнес-карта|Счета и карты|1|Карта для оплаты расходов и самоинкассации
+Корпоративные закупки|Закупки|1|Онлайн-платформа для закупок малой формы
+Бизнес-планы|В помощь бизнесу|0
+Кэш-пулинг|Группам компаний|1|Централизованное управление внутригрупповой ликвидностью
+Инкассация|Финансовые услуги|1|Перевозка наличных и зачисление на расчётный счёт
+Согласие на показ счетов контрагентам|Ежедневные операции|1
+Конструктор документов|Юридические услуги|1|Создание типовых документов для бизнеса
+Проверка зарубежного партнера|ВЭД|1|Оценка надёжности зарубежного контрагента
+Экспертиза контракта ВЭД|ВЭД|1|Проверка контракта и рекомендации
+Монитор ВЭД|ВЭД|1|Оповещения о значимых событиях ВЭД
+Постановка контракта ВЭД на учет|ВЭД|1
+СПД по декларациям на товары|ВЭД|1|Оформление справок о подтверждающих документах
+SOS.ВЭД|ВЭД|0|Защита от нарушений валютного законодательства
+Корпоративное управление|Группам компаний|1|Передача прав на управление счётом
+Экспресс-кредит|Финансовые услуги|1|Кредитное решение за 5 минут
+Сертификация|Таможенные сервисы|1|Разрешительные документы для поставок
+Таможенные карты|Таможенные сервисы|1|Оплата таможенных платежей онлайн
+Таможенное сопровождение|Таможенные сервисы|1|Оформление внешнеторговых поставок
+Международная логистика|Таможенные сервисы|1|Доставка груза до места назначения
+Валютный коридор|Инструменты ВЭД|0|Фиксация диапазона курса валюты
+Валютный форвард|Инструменты ВЭД|0|Фиксация курса на будущую дату
+Валютный опцион|Инструменты ВЭД|0|Право зафиксировать курс на будущую дату
+Консультация бухгалтера|Бухгалтерия и учёт|1|Консультация по отчётности, налогам и аудиту
+Бухгалтерия ВТБ для бизнеса|Бухгалтерия и учёт|1
+Депозиты|Финансовые услуги|1|Доход от размещения свободных средств
+Неснижаемые остатки|Финансовые услуги|1|Доход при фиксации остатков на счетах
+Кабинет застройщика|Ежедневные операции|1
+Цифровая бухгалтерия ВТБ|Бухгалтерия и учёт|0|Расчёт налогов и подготовка документов для ФНС
+Цифровой рубль|Счета и карты|1
+Проверка сотрудников|Бизнес без рисков|1
+Электронный документооборот|Бухгалтерия и учёт|1|Обмен электронными документами с контрагентами
+Раздел Помощь|Помощь|0|Справочник по работе с интернет-банком
+Коммерческие гарантии|Закупки|0|Обеспечение обязательств по коммерческим контрактам
+Экспресс-гарантии|Закупки|1|Обеспечение для государственных закупок
+Гарантии|Закупки|1|Гарантии для закупок, тендеров, налогов и таможни
+Интеграционный Банк-Клиент|Интеграционные сервисы|1
+1С:БизнесСтарт|Бухгалтерия и учёт|0|Онлайн-бухгалтерия и электронная отчётность
+Интернет-бухгалтерия «Моё дело»|Бухгалтерия и учёт|0|Самостоятельное ведение бухгалтерии
+Инвестиции|Ежедневные операции|0|Размещение свободных средств
+Счета-фактуры|Интеграционные сервисы|1
+Конструктор сайтов|В помощь бизнесу|1|Создание сайтов и интернет-магазинов
+Копилка для бизнеса|Финансовые услуги|1|Резервы на налоги и регулярные платежи
+Правовая поддержка сайта|Юридические услуги|0|Правовые документы для сайта и бизнеса
+Правовое сопровождение ВЭД|ВЭД|0
+Маркетинговые исследования|В помощь бизнесу|0
+База поставщиков КНР|ВЭД|1|Поиск потенциальных поставщиков в Китае
+Страхование от несчастных случаев|Персонал|1
+Пакет СМС «Безопасность и контроль»|Ежедневные операции|1
+Облачная касса|Продажи|1|Отправка чеков при дистанционных расчётах
+Отчетность в госорганы|Бухгалтерия и учёт|1
+Новый счёт|Счета и карты|1
+Развитие бизнеса|В помощь бизнесу|1
+Патентование изобретений|Интеллектуальная собственность|0|Защита прав на изобретения и полезные модели
+Бизнес-доставка|В помощь бизнесу|1|Доставка посылок Почтой России
+Корпоративная подписка на консультации психологов и специалистов ЗОЖ|Персонал|0
+Регистрация ПО в Роспатенте|Интеллектуальная собственность|0|Оформление исключительных прав на ПО
+Регистрация товарного знака|Интеллектуальная собственность|1|Регистрация прав онлайн
+Продвижение в интернете|В помощь бизнесу|1
+Управляйте рисками|Бизнес без рисков|1
+Зарплатный проект|Финансовые услуги|1|Перечисление заработной платы онлайн
+Самоинкассация|Финансовые услуги|0
+Расчёты с самозанятыми|Финансовые услуги|1|Расчёты с исполнителями за оказанные услуги
+Биржа фриланса FL.ru|Ежедневные операции|1
+Самозанятость|Самозанятым|1|Регистрация в качестве самозанятого ИП
+Спутник здоровья от СОГАЗ|Персонал|1|Программа добровольного медицинского страхования
+Внесение изменений в ЕГРИП и ЕГРЮЛ|Госсервисы для бизнеса|1|Подготовка документов для ФНС
+Страхование ответственности|В помощь бизнесу|1
+Проверки надзорных органов|Бизнес без рисков|1
+Сопровождение контрактов|Ежедневные операции|1|Контроль расходования средств по контрактам
+Проверка контрагентов|Бизнес без рисков|1
+Проверка контрагента|Ежедневные операции|1|Онлайн-проверка благонадёжности партнёров
+Пакеты услуг|Счета и карты|1|Экономия на обслуживании счёта и операциях
+Цифровая медицина|Персонал|1
+Онлайн-медицина|Персонал|0|Телемедицинское обслуживание сотрудников
+Перевод документов на другие языки|ВЭД|0
+Автоматизация командировок|Персонал|1|Управление деловыми поездками
+КЭП от УЦ ВТБ|Госсервисы для бизнеса|1
+КЭП ФЛ и МЧД|Госсервисы для бизнеса|1
+Получить КЭП от ФНС России|Госсервисы для бизнеса|1|Для банка, госорганов, отчётности и госуслуг
+МойСклад|Продажи|0|Торговля, склад и CRM в облаке
+Сервис доставки|Самозанятым|0
+Защита профессиональной ответственности|Самозанятым|0
+Продвижение от Ярмарки Мастеров|Самозанятым|0
+Сервис онлайн-записи клиентов|Самозанятым|0
+Внесение в реестр Минцифры|Интеллектуальная собственность|0|Регистрация российского программного обеспечения
+Юрист 24|Юридические услуги|1|Круглосуточная правовая поддержка`;
+
+const products = raw.trim().split('\n').map((line,index)=>{const [name,sourceCategory,available,description='']=line.split('|');return{id:index+1,name,sourceCategory,available:available==='1',description}});
+
+
+const modelAssignments = new Map([
+  ["1С:Директ-Банк", {situation:"daily", available:true}],
+  ["Мультиконтроль", {situation:"money", available:true}],
+  ["Интернет-эквайринг", {situation:"sales", available:true}],
+  ["SoftPos", {situation:"sales", available:true}],
+  ["Торговый эквайринг", {situation:"sales", available:true}],
+  ["ВТБ-касса", {situation:"sales", available:true}],
+  ["Автоматическая депозитная машина", {situation:"money", available:true}],
+  ["Онлайн-налог для АУСН", {situation:"accounting", available:true}],
+  ["Бизнес-карта", {situation:"money", available:true}],
+  ["Корпоративные закупки", {situation:"growth", available:true}],
+  ["Кэш-пулинг", {situation:"money", available:true}],
+  ["Инкассация", {situation:"money", available:true}],
+  ["Согласие на показ счетов контрагентам", {situation:"daily", available:true}],
+  ["Конструктор документов", {situation:"accounting", available:true}],
+  ["Проверка зарубежного партнера", {situation:"foreign", available:true}],
+  ["Экспертиза контракта ВЭД", {situation:"foreign", available:true}],
+  ["Монитор ВЭД", {situation:"foreign", available:true}],
+  ["Постановка контракта ВЭД на учет", {situation:"foreign", available:true}],
+  ["СПД по декларациям на товары", {situation:"foreign", available:true}],
+  ["Корпоративное управление", {situation:"money", available:true}],
+  ["Экспресс-кредит", {situation:"funding", available:true}],
+  ["Сертификация", {situation:"foreign", available:true}],
+  ["Таможенные карты", {situation:"foreign", available:true}],
+  ["Таможенное сопровождение", {situation:"foreign", available:true}],
+  ["Международная логистика", {situation:"foreign", available:true}],
+  ["Консультация бухгалтера", {situation:"accounting", available:true}],
+  ["Бухгалтерия ВТБ для бизнеса", {situation:"accounting", available:true}],
+  ["Депозиты", {situation:"savings", available:true}],
+  ["Неснижаемые остатки", {situation:"savings", available:true}],
+  ["Кабинет застройщика", {situation:"growth", available:true}],
+  ["Цифровой рубль", {situation:"money", available:true}],
+  ["Проверка сотрудников", {situation:"team", available:true}],
+  ["Электронный документооборот", {situation:"accounting", available:true}],
+  ["Экспресс-гарантии", {situation:"funding", available:true}],
+  ["Гарантии", {situation:"funding", available:true}],
+  ["Интеграционный Банк-Клиент", {situation:"daily", available:true}],
+  ["Счета-фактуры", {situation:"accounting", available:true}],
+  ["Конструктор сайтов", {situation:"sales", available:true}],
+  ["Копилка для бизнеса", {situation:"savings", available:true}],
+  ["База поставщиков КНР", {situation:"foreign", available:true}],
+  ["Страхование от несчастных случаев", {situation:"team", available:true}],
+  ["Пакет СМС «Безопасность и контроль»", {situation:"protect", available:true}],
+  ["Облачная касса", {situation:"sales", available:true}],
+  ["Отчетность в госорганы", {situation:"accounting", available:true}],
+  ["Новый счёт", {situation:"change", available:true}],
+  ["Развитие бизнеса", {situation:"growth", available:true}],
+  ["Бизнес-доставка", {situation:"growth", available:true}],
+  ["Регистрация товарного знака", {situation:"growth", available:true}],
+  ["Продвижение в интернете", {situation:"growth", available:true}],
+  ["Управляйте рисками", {situation:"protect", available:true}],
+  ["Зарплатный проект", {situation:"team", available:true}],
+  ["Расчёты с самозанятыми", {situation:"team", available:false}],
+  ["Биржа фриланса FL.ru", {situation:"team", available:false}],
+  ["Самозанятость", {situation:"change", available:true}],
+  ["Спутник здоровья от СОГАЗ", {situation:"team", available:true}],
+  ["Внесение изменений в ЕГРИП и ЕГРЮЛ", {situation:"change", available:true}],
+  ["Страхование ответственности", {situation:"protect", available:true}],
+  ["Проверки надзорных органов", {situation:"protect", available:true}],
+  ["Сопровождение контрактов", {situation:"growth", available:true}],
+  ["Проверка контрагентов", {situation:"protect", available:true}],
+  ["Проверка контрагента", {situation:"protect", available:true}],
+  ["Пакеты услуг", {situation:"daily", available:true}],
+  ["Цифровая медицина", {situation:"team", available:true}],
+  ["Автоматизация командировок", {situation:"team", available:true}],
+  ["КЭП от УЦ ВТБ", {situation:"accounting", available:true}],
+  ["КЭП ФЛ и МЧД", {situation:"accounting", available:true}],
+  ["Получить КЭП от ФНС России", {situation:"accounting", available:true}],
+  ["Юрист 24", {situation:"protect", available:true}],
+  ["1С:Касса", {situation:"sales", available:false}],
+  ["Бивалютный депозит", {situation:"savings", available:false}],
+  ["Брокерский счет", {situation:"savings", available:false}],
+  ["Бизнес-планы", {situation:"growth", available:false}],
+  ["SOS.ВЭД", {situation:"foreign", available:false}],
+  ["Валютный коридор", {situation:"foreign", available:false}],
+  ["Валютный форвард", {situation:"foreign", available:false}],
+  ["Валютный опцион", {situation:"foreign", available:false}],
+  ["Цифровая бухгалтерия ВТБ", {situation:"accounting", available:false}],
+  ["Раздел Помощь", {situation:"daily", available:false}],
+  ["Коммерческие гарантии", {situation:"funding", available:false}],
+  ["1С:БизнесСтарт", {situation:"accounting", available:false}],
+  ["Интернет-бухгалтерия «Моё дело»", {situation:"accounting", available:false}],
+  ["Инвестиции", {situation:"savings", available:false}],
+  ["Правовая поддержка сайта", {situation:"protect", available:false}],
+  ["Правовое сопровождение ВЭД", {situation:"foreign", available:false}],
+  ["Маркетинговые исследования", {situation:"sales", available:false}],
+  ["Патентование изобретений", {situation:"growth", available:false}],
+  ["Корпоративная подписка на консультации психологов и специалистов ЗОЖ", {situation:"team", available:false}],
+  ["Регистрация ПО в Роспатенте", {situation:"growth", available:false}],
+  ["Самоинкассация", {situation:"money", available:false}],
+  ["Онлайн-медицина", {situation:"team", available:false}],
+  ["Перевод документов на другие языки", {situation:"foreign", available:false}],
+  ["МойСклад", {situation:"daily", available:false}],
+  ["Сервис доставки", {situation:"sales", available:false}],
+  ["Защита профессиональной ответственности", {situation:"protect", available:false}],
+  ["Продвижение от Ярмарки Мастеров", {situation:"sales", available:false}],
+  ["Сервис онлайн-записи клиентов", {situation:"sales", available:false}],
+  ["Внесение в реестр Минцифры", {situation:"growth", available:false}]
+]);
+
+const newModelAssignments=new Map([...modelAssignments].map(([name,assignment])=>[name,{...assignment}]));
+[
+  ['Новый счёт','money'],
+  ['Самозанятость','daily'],
+  ['Мультиконтроль','daily'],
+  ['Корпоративное управление','daily'],
+  ['Конструктор документов','documents'],
+  ['Электронный документооборот','documents'],
+  ['Счета-фактуры','documents'],
+  ['КЭП от УЦ ВТБ','documents'],
+  ['КЭП ФЛ и МЧД','documents'],
+  ['Получить КЭП от ФНС России','documents'],
+  ['Внесение изменений в ЕГРИП и ЕГРЮЛ','documents']
+].forEach(([name,situation])=>newModelAssignments.get(name).situation=situation);
+
+let situations=currentSituations;
+let activeAssignments=modelAssignments;
+
+products.forEach(product=>{
+  const assignment=modelAssignments.get(product.name);
+  if(!assignment)throw new Error(`Для продукта «${product.name}» не задана категория`);
+  product.available=assignment.available;
+});
+
+function classify(p){
+  const assignment=activeAssignments.get(p.name);
+  return assignment?[{situation:assignment.situation,group:'Продукты и сервисы'}]:[];
+}
+
+products.forEach(p=>p.placements=classify(p));
+const grid=document.querySelector('#situationGrid');
+const backdrop=document.querySelector('#backdrop'), drawer=document.querySelector('#drawer'), drawerBody=document.querySelector('#drawerBody');
+const groupingVersionControl=document.querySelector('#groupingVersion');
+const changeLegend=document.querySelector('#changeLegend');
+const showChangesWrapper=document.querySelector('#showChangesWrapper');
+const showChangesControl=document.querySelector('#showChanges');
+const showDisabledControl=document.querySelector('#showDisabledProducts');
+let activeSituation=null,showDisabled=showDisabledControl.checked,showChanges=showChangesControl.checked;
+
+function productsFor(id){return products.filter(p=>p.placements.some(x=>x.situation===id))}
+function statusMatch(p){return p.available||showDisabled}
+function applyGroupingVersion(version){
+  const isNew=version==='new';
+  situations=isNew?newSituations:currentSituations;
+  activeAssignments=isNew?newModelAssignments:modelAssignments;
+  showChangesWrapper.hidden=!isNew;
+  changeLegend.hidden=!isNew||!showChanges;
+  products.forEach(p=>p.placements=classify(p));
+  if(drawer.classList.contains('open'))closeDrawer();
+  activeSituation=null;
+  renderCards();
+}
+function renderCards(){
+  grid.innerHTML='';
+  situations.forEach((s,i)=>{
+    if(s.special){
+      const el=document.createElement('article');el.className='situation-card special-card';el.style.setProperty('--accent',s.accent);
+      el.innerHTML=`<h3>${s.title}</h3>`;
+      grid.appendChild(el);return;
+    }
+    const all=productsFor(s.id);
+    if(!all.length)return;
+    const showCardChange=showChanges&&Boolean(s.changeNote);
+    const changeClass=showCardChange?(s.changeType==='new'?' new-card':' changed-card'):'';
+    const changeLabel=s.changeType==='new'?'Новая карточка':'Изменено';
+    const el=document.createElement('button');el.className=`situation-card${changeClass}`;el.style.setProperty('--accent',s.accent);el.dataset.open=s.id;
+    el.innerHTML=`<h3>${s.title}${showCardChange?`<span class="change-marker">${changeLabel}</span>`:''}</h3><p>${s.subtitle}</p>${showCardChange?`<div class="change-note">${s.changeNote}</div>`:''}`;
+    grid.appendChild(el);
+  });
+}
+
+function openDrawer(id){activeSituation=situations.find(s=>s.id===id);if(!activeSituation)return;document.querySelector('#drawerTitle').textContent=activeSituation.title;document.querySelector('#drawerSubtitle').textContent=activeSituation.subtitle;renderDrawer();backdrop.hidden=false;requestAnimationFrame(()=>drawer.classList.add('open'));drawer.setAttribute('aria-hidden','false');document.body.classList.add('no-scroll');document.querySelector('#closeDrawer').focus()}
+function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('no-scroll');setTimeout(()=>backdrop.hidden=true,280)}
+function initials(name){return name.replace(/[«»“”]/g,'').split(/[\s:-]+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()}
+function renderDrawer(){
+  const all=productsFor(activeSituation.id).filter(statusMatch);drawerBody.innerHTML='';
+  activeSituation.groups.forEach(group=>{const items=all.filter(p=>p.placements.some(x=>x.situation===activeSituation.id&&x.group===group));if(!items.length)return;const section=document.createElement('section');section.className='product-group';section.innerHTML=`<h3>${group} · ${items.length}</h3><div class="product-list">${items.map(p=>`<article class="product"><span class="product-icon">${initials(p.name)}</span><div><h4>${p.name}</h4><p>${p.description||p.sourceCategory}</p></div><span class="badge ${p.available?'':'planned'}">${p.available?'Доступна':'Выключена'}</span></article>`).join('')}</div>`;drawerBody.appendChild(section)});
+  if(!drawerBody.children.length)drawerBody.innerHTML='<div class="no-products">В этой группе пока нет продуктов с выбранным статусом.</div>';
+}
+
+document.addEventListener('click',e=>{const open=e.target.closest('[data-open]');if(open)openDrawer(open.dataset.open)});
+groupingVersionControl.addEventListener('change',()=>applyGroupingVersion(groupingVersionControl.value));
+showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;renderCards()});
+showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer()});
+document.querySelector('#closeDrawer').addEventListener('click',closeDrawer);backdrop.addEventListener('click',closeDrawer);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer()});
+renderCards();
