@@ -267,7 +267,10 @@ const changeLegend=document.querySelector('#changeLegend');
 const showChangesWrapper=document.querySelector('#showChangesWrapper');
 const showChangesControl=document.querySelector('#showChanges');
 const showDisabledControl=document.querySelector('#showDisabledProducts');
+const catalogSearch=document.querySelector('#catalogSearch');
+const catalogViewButton=document.querySelector('#catalogViewButton');
 let activeSituation=null,showDisabled=showDisabledControl.checked,showChanges=showChangesControl.checked;
+let catalogMode='situations',searchQuery='';
 
 function productsFor(id){return products.filter(p=>p.placements.some(x=>x.situation===id))}
 function statusMatch(p){return p.available||showDisabled}
@@ -282,16 +285,33 @@ function applyGroupingVersion(version){
   activeSituation=null;
   renderCards();
 }
+function normalized(value){return String(value||'').toLocaleLowerCase('ru-RU')}
+function matchesSearch(...values){
+  if(searchQuery.length<3)return true;
+  return values.some(value=>normalized(value).includes(searchQuery));
+}
+function renderProductCards(){
+  grid.classList.add('product-grid');
+  const visibleProducts=products.filter(product=>statusMatch(product)&&matchesSearch(product.name,product.description,product.sourceCategory));
+  grid.innerHTML=visibleProducts.map(product=>`<article class="catalog-product-card"><span class="product-icon">${initials(product.name)}</span><div class="catalog-product-copy"><h3>${product.name}</h3><p>${product.description||product.sourceCategory}</p></div><span class="badge ${product.available?'':'planned'}">${product.available?'Доступна':'Выключена'}</span></article>`).join('');
+  if(!visibleProducts.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Попробуйте изменить запрос или показать выключенные продукты.</span></div>';
+}
 function renderCards(){
+  if(catalogMode==='products'){renderProductCards();return}
+  grid.classList.remove('product-grid');
   grid.innerHTML='';
   situations.forEach((s,i)=>{
     if(s.special){
+      if(!matchesSearch(s.title,s.subtitle))return;
       const el=document.createElement('article');el.className='situation-card special-card';el.style.setProperty('--accent',s.accent);
       el.innerHTML=`<h3>${s.title}</h3>`;
       grid.appendChild(el);return;
     }
     const all=productsFor(s.id);
     if(!all.length)return;
+    const situationMatches=matchesSearch(s.title,s.subtitle);
+    const productMatches=all.some(product=>matchesSearch(product.name,product.description,product.sourceCategory));
+    if(searchQuery.length>=3&&!situationMatches&&!productMatches)return;
     const showCardChange=showChanges&&Boolean(s.changeNote);
     const changeClass=showCardChange?(s.changeType==='new'?' new-card':' changed-card'):'';
     const changeLabel=s.changeType==='new'?'Новая карточка':'Изменено';
@@ -299,6 +319,7 @@ function renderCards(){
     el.innerHTML=`<h3>${s.title}${showCardChange?`<span class="change-marker">${changeLabel}</span>`:''}</h3><p>${s.subtitle}</p>${showCardChange?`<div class="change-note">${s.changeNote}</div>`:''}`;
     grid.appendChild(el);
   });
+  if(!grid.children.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Введите другой запрос.</span></div>';
 }
 
 function openDrawer(id){activeSituation=situations.find(s=>s.id===id);if(!activeSituation)return;document.querySelector('#drawerTitle').textContent=activeSituation.title;document.querySelector('#drawerSubtitle').textContent=activeSituation.subtitle;renderDrawer();backdrop.hidden=false;requestAnimationFrame(()=>drawer.classList.add('open'));drawer.setAttribute('aria-hidden','false');document.body.classList.add('no-scroll');document.querySelector('#closeDrawer').focus()}
@@ -313,6 +334,15 @@ function renderDrawer(){
 document.addEventListener('click',e=>{const open=e.target.closest('[data-open]');if(open)openDrawer(open.dataset.open)});
 groupingVersionControl.addEventListener('change',()=>applyGroupingVersion(groupingVersionControl.value));
 showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;renderCards()});
-showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer()});
+showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer();if(catalogMode==='products')renderCards()});
+catalogSearch.addEventListener('input',()=>{searchQuery=normalized(catalogSearch.value.trim());renderCards()});
+catalogViewButton.addEventListener('click',()=>{
+  catalogMode=catalogMode==='situations'?'products':'situations';
+  catalogViewButton.textContent=catalogMode==='products'?'По жизненным ситуациям':'Все продукты';
+  catalogViewButton.setAttribute('aria-pressed',catalogMode==='products'?'true':'false');
+  if(drawer.classList.contains('open'))closeDrawer();
+  renderCards();
+  document.querySelector('#situations').scrollIntoView({behavior:'smooth',block:'start'});
+});
 document.querySelector('#closeDrawer').addEventListener('click',closeDrawer);backdrop.addEventListener('click',closeDrawer);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer()});
 renderCards();

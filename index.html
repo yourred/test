@@ -30,12 +30,19 @@
           <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
         </label>
       </div>
+      <label class="catalog-search" for="catalogSearch">
+        <span class="search-icon" aria-hidden="true"></span>
+        <input id="catalogSearch" type="search" placeholder="Поиск по продуктам и ситуациям" autocomplete="off">
+      </label>
       <div class="change-legend" id="changeLegend" hidden>
         <span class="legend-title">Изменения в новой версии</span>
         <span class="legend-item"><i class="legend-swatch changed"></i>Изменено название или состав</span>
         <span class="legend-item"><i class="legend-swatch new"></i>Новая карточка</span>
       </div>
       <div class="situation-grid" id="situationGrid"></div>
+      <div class="catalog-view-actions">
+        <button class="all-products-button" id="catalogViewButton" type="button">Все продукты</button>
+      </div>
     </section>
   </main>
 
