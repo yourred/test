@@ -15,18 +15,39 @@ const currentSituations = [
 
 const newSituations = [
   {id:'similar',title:'Компании, похожие на вашу, выбирают',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
-  {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Добавлена «Самозанятость» из «Начать или изменить бизнес». Из «Управлять деньгами» перенесены «Мультиконтроль» и «Корпоративное управление»'},
-  {id:'sales',title:'Начать и увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Начать или увеличить продажи» → «Начать и увеличить продажи»'},
+  {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> без изменений.<br><strong>Состав:</strong> «Самозанятость»: «Начать или изменить бизнес» → «Наладить ежедневную работу»; «Мультиконтроль»: «Управлять деньгами» → «Наладить ежедневную работу»; «Корпоративное управление»: «Управлять деньгами» → «Наладить ежедневную работу».'},
+  {id:'sales',title:'Начать и увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> «Начать или увеличить продажи» → «Начать и увеличить продажи».<br><strong>Состав:</strong> без изменений.'},
   {id:'savings',title:'Сохранить и приумножить деньги',subtitle:'Депозиты, остатки, резервы и инвестиционные решения',accent:'#3261C8',groups:['Продукты и сервисы']},
-  {id:'money',title:'Управлять деньгами',subtitle:'Счета, карты, наличные и управление ликвидностью',accent:'#3261C8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Добавлен «Новый счёт» из «Начать или изменить бизнес». Исключены «Мультиконтроль» и «Корпоративное управление» — они перенесены в ежедневную работу'},
+  {id:'money',title:'Управлять деньгами',subtitle:'Счета, карты, наличные и управление ликвидностью',accent:'#3261C8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> без изменений.<br><strong>Состав:</strong> «Новый счёт»: «Начать или изменить бизнес» → «Управлять деньгами»; «Мультиконтроль»: «Управлять деньгами» → «Наладить ежедневную работу»; «Корпоративное управление»: «Управлять деньгами» → «Наладить ежедневную работу».'},
   {id:'growth',title:'Расширить бизнес',subtitle:'Закупки, развитие, доставка и интеллектуальная собственность',accent:'#E0527D',groups:['Продукты и сервисы']},
-  {id:'accounting',title:'Вести учёт и платить налоги',subtitle:'Бухгалтерия, налоговые режимы, отчётность и консультации',accent:'#119F87',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Вести учет, налоги и документы» → «Вести учёт и платить налоги». Исключены документы, ЭДО, счета-фактуры и три сервиса КЭП'},
+  {id:'accounting',title:'Вести учёт и платить налоги',subtitle:'Бухгалтерия, налоговые режимы, отчётность и консультации',accent:'#119F87',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> «Вести учет, налоги и документы» → «Вести учёт и платить налоги».<br><strong>Состав:</strong> «Конструктор документов», «Электронный документооборот», «Счета-фактуры», «КЭП от УЦ ВТБ», «КЭП ФЛ и МЧД», «Получить КЭП от ФНС России»: «Вести учет, налоги и документы» → «Работать с документами и электронной подписью».'},
   {id:'funding',title:'Получить финансирование на развитие',subtitle:'Кредиты и гарантии для текущих задач и роста',accent:'#2067B8',groups:['Продукты и сервисы']},
-  {id:'documents',title:'Работать с документами и электронной подписью',subtitle:'Документооборот, счета-фактуры, регистрационные сведения и КЭП',accent:'#168C78',groups:['Продукты и сервисы'],changeType:'new',changeNote:'Из «Вести учет, налоги и документы» перенесены: Конструктор документов, ЭДО, Счета-фактуры и три сервиса КЭП. Из «Начать или изменить бизнес» — изменения в ЕГРИП и ЕГРЮЛ'},
-  {id:'foreign',title:'Работа с зарубежными партнёрами',subtitle:'Партнёры, контракты, валютные риски, таможня и логистика',accent:'#167FA4',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Начать работать за рубежом» → «Работа с зарубежными партнёрами»'},
-  {id:'team',title:'Забота о команде',subtitle:'Сотрудники, исполнители, зарплата, здоровье и командировки',accent:'#E6822D',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'Изменено название: «Сформировать команду» → «Забота о команде»'},
+  {id:'documents',title:'Работать с документами и электронной подписью',subtitle:'Документооборот, счета-фактуры, регистрационные сведения и КЭП',accent:'#168C78',groups:['Продукты и сервисы'],changeType:'new',changeNote:'<strong>Название:</strong> новая категория.<br><strong>Состав:</strong> шесть продуктов документов и КЭП: «Вести учет, налоги и документы» → «Работать с документами и электронной подписью»; «Внесение изменений в ЕГРИП и ЕГРЮЛ»: «Начать или изменить бизнес» → «Работать с документами и электронной подписью».'},
+  {id:'foreign',title:'Работа с зарубежными партнёрами',subtitle:'Партнёры, контракты, валютные риски, таможня и логистика',accent:'#167FA4',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> «Начать работать за рубежом» → «Работа с зарубежными партнёрами».<br><strong>Состав:</strong> без изменений.'},
+  {id:'team',title:'Забота о команде',subtitle:'Сотрудники, исполнители, зарплата, здоровье и командировки',accent:'#E6822D',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> «Сформировать команду» → «Забота о команде».<br><strong>Состав:</strong> без изменений.'},
   {id:'protect',title:'Защитить бизнес',subtitle:'Проверки, риски, страхование и правовая поддержка',accent:'#5A6477',groups:['Продукты и сервисы']}
 ];
+
+const situationIcons = {
+  similar:'assets/icons/new-categories/01-similar-companies-v3-cartoon.png',
+  daily:'assets/icons/new-categories/02-daily-work.png',
+  sales:'assets/icons/new-categories/03-grow-sales.png',
+  savings:'assets/icons/new-categories/04-grow-savings.png',
+  money:'assets/icons/new-categories/05-manage-money.png',
+  growth:'assets/icons/new-categories/06-expand-business-v3-cartoon.png',
+  accounting:'assets/icons/new-categories/07-accounting-taxes.png',
+  funding:'assets/icons/new-categories/09-documents-signature.png',
+  documents:'assets/icons/new-categories/08-development-financing.png',
+  change:'assets/icons/new-categories/13-start-or-change-business.png',
+  foreign:'assets/icons/new-categories/10-foreign-partners.png',
+  team:'assets/icons/new-categories/11-team-care.png',
+  protect:'assets/icons/new-categories/12-business-protection.png'
+};
+
+function situationIcon(situation){
+  const src=situationIcons[situation.id];
+  return src?`<img class="situation-icon" src="${src}" alt="" aria-hidden="true">`:'';
+}
 
 const raw = `
 1С:Директ-Банк|Интеграционные сервисы|1
@@ -264,6 +285,7 @@ const grid=document.querySelector('#situationGrid');
 const backdrop=document.querySelector('#backdrop'), drawer=document.querySelector('#drawer'), drawerBody=document.querySelector('#drawerBody');
 const groupingVersionControl=document.querySelector('#groupingVersion');
 const changeLegend=document.querySelector('#changeLegend');
+const removedCategoryNote=document.querySelector('#removedCategoryNote');
 const showChangesWrapper=document.querySelector('#showChangesWrapper');
 const showChangesControl=document.querySelector('#showChanges');
 const showDisabledControl=document.querySelector('#showDisabledProducts');
@@ -280,6 +302,7 @@ function applyGroupingVersion(version){
   activeAssignments=isNew?newModelAssignments:modelAssignments;
   showChangesWrapper.hidden=!isNew;
   changeLegend.hidden=!isNew||!showChanges;
+  removedCategoryNote.hidden=!isNew||!showChanges;
   products.forEach(p=>p.placements=classify(p));
   if(drawer.classList.contains('open'))closeDrawer();
   activeSituation=null;
@@ -304,7 +327,7 @@ function renderCards(){
     if(s.special){
       if(!matchesSearch(s.title,s.subtitle))return;
       const el=document.createElement('article');el.className='situation-card special-card';el.style.setProperty('--accent',s.accent);
-      el.innerHTML=`<h3>${s.title}</h3>`;
+      el.innerHTML=`<div class="situation-card-copy"><h3>${s.title}</h3></div>${situationIcon(s)}`;
       grid.appendChild(el);return;
     }
     const all=productsFor(s.id);
@@ -316,7 +339,7 @@ function renderCards(){
     const changeClass=showCardChange?(s.changeType==='new'?' new-card':' changed-card'):'';
     const changeLabel=s.changeType==='new'?'Новая карточка':'Изменено';
     const el=document.createElement('button');el.className=`situation-card${changeClass}`;el.style.setProperty('--accent',s.accent);el.dataset.open=s.id;
-    el.innerHTML=`<h3>${s.title}${showCardChange?`<span class="change-marker">${changeLabel}</span>`:''}</h3><p>${s.subtitle}</p>${showCardChange?`<div class="change-note">${s.changeNote}</div>`:''}`;
+    el.innerHTML=`<div class="situation-card-copy"><h3>${s.title}${showCardChange?`<span class="change-marker">${changeLabel}</span>`:''}</h3><p>${s.subtitle}</p></div>${situationIcon(s)}${showCardChange?`<div class="change-note">${s.changeNote}</div>`:''}`;
     grid.appendChild(el);
   });
   if(!grid.children.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Введите другой запрос.</span></div>';
@@ -333,7 +356,7 @@ function renderDrawer(){
 
 document.addEventListener('click',e=>{const open=e.target.closest('[data-open]');if(open)openDrawer(open.dataset.open)});
 groupingVersionControl.addEventListener('change',()=>applyGroupingVersion(groupingVersionControl.value));
-showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;renderCards()});
+showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;removedCategoryNote.hidden=!showChanges;renderCards()});
 showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer();if(catalogMode==='products')renderCards()});
 catalogSearch.addEventListener('input',()=>{searchQuery=normalized(catalogSearch.value.trim());renderCards()});
 catalogViewButton.addEventListener('click',()=>{

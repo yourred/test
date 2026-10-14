@@ -6,7 +6,7 @@
   <meta name="description" content="Прототип витрины продуктов и услуг для бизнеса по жизненным ситуациям">
   <title>Сервисы для бизнеса — жизненные ситуации</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23005BFF'/%3E%3Cpath d='M17 21h30l-5 7H22zm4 11h22l-5 7H26zm6 11h11l-4 6h-3z' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20261013-2">
+  <link rel="stylesheet" href="styles.css?v=20261013-3">
 </head>
 <body>
   <main class="cards-only">
@@ -39,6 +39,12 @@
         <span class="legend-item"><i class="legend-swatch changed"></i>Изменено название или состав</span>
         <span class="legend-item"><i class="legend-swatch new"></i>Новая карточка</span>
       </div>
+      <div class="removed-category-note" id="removedCategoryNote" hidden>
+        <strong>Категория удалена: «Начать или изменить бизнес»</strong>
+        <span>«Новый счёт»: «Начать или изменить бизнес» → «Управлять деньгами»</span>
+        <span>«Самозанятость»: «Начать или изменить бизнес» → «Наладить ежедневную работу»</span>
+        <span>«Внесение изменений в ЕГРИП и ЕГРЮЛ»: «Начать или изменить бизнес» → «Работать с документами и электронной подписью»</span>
+      </div>
       <div class="situation-grid" id="situationGrid"></div>
       <div class="catalog-view-actions">
         <button class="all-products-button" id="catalogViewButton" type="button">Все продукты</button>
@@ -55,6 +61,6 @@
     <div class="drawer-body" id="drawerBody"></div>
   </aside>
 
-  <script src="app.js?v=20261013-2"></script>
+  <script src="app.js?v=20261013-3"></script>
 </body>
 </html>
