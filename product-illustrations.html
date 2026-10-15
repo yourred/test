@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Иллюстрации продуктов — синяя коллекция</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fc;color:#122650;font:15px/1.45 Arial,sans-serif}main{max-width:1360px;margin:auto;padding:32px}header{display:flex;gap:20px;align-items:center;justify-content:space-between;margin-bottom:26px}h1{font-size:25px;margin:0 0 7px}header p{margin:0;color:#607397}input{width:290px;max-width:100%;border:1px solid #d8e3f4;border-radius:12px;padding:12px;font:inherit;color:inherit}.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}article{background:white;border:1px solid #e0e8f5;border-radius:18px;overflow:hidden;padding:16px}figure{height:190px;margin:0 0 16px;display:grid;place-items:center}img{width:100%;height:100%;object-fit:contain}h2{font-size:14px;margin:0 0 6px}small{color:#657899}a{color:#1758b4}article>a{display:block;text-decoration:none;color:inherit}@media(max-width:1050px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){main{padding:18px}header{align-items:stretch;flex-direction:column}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}figure{height:145px}}
+</style>
+<main><header><div><h1>Иллюстрации продуктов</h1><p id="summary">Синий · светло-синий · белый</p></div><input id="search" type="search" placeholder="Найти продукт" aria-label="Найти продукт"></header><div id="gallery" class="grid"></div></main>
+<script src="product-illustrations-data.js?v=20261015-flags"></script>
+<script>
+const all=window.productIllustrations||[];document.querySelector('#summary').textContent=`${all.length} из 97 · Синий, светло-синий и белый`;const gallery=document.querySelector('#gallery');function render(){const q=document.querySelector('#search').value.toLocaleLowerCase('ru');gallery.replaceChildren();for(const p of all.filter(p=>p.name.toLocaleLowerCase('ru').includes(q))){const card=document.createElement('article');const link=document.createElement('a');link.href=p.asset;link.target='_blank';const figure=document.createElement('figure');const img=document.createElement('img');img.src=p.asset;img.alt=p.name;img.loading='lazy';figure.append(img);const title=document.createElement('h2');title.textContent=p.name;const status=document.createElement('small');status.textContent=p.enabled?'Доступна':'Выключена';link.append(figure,title,status);card.append(link);gallery.append(card)}}document.querySelector('#search').addEventListener('input',render);render();
+</script>
+</html>

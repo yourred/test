@@ -289,10 +289,21 @@ const removedCategoryNote=document.querySelector('#removedCategoryNote');
 const showChangesWrapper=document.querySelector('#showChangesWrapper');
 const showChangesControl=document.querySelector('#showChanges');
 const showDisabledControl=document.querySelector('#showDisabledProducts');
+const showImagesControl=document.querySelector('#showImages');
 const catalogSearch=document.querySelector('#catalogSearch');
 const catalogViewButton=document.querySelector('#catalogViewButton');
 let activeSituation=null,showDisabled=showDisabledControl.checked,showChanges=showChangesControl.checked;
 let catalogMode='situations',searchQuery='';
+
+try{
+  const savedVisibility=localStorage.getItem('vtb-show-images');
+  if(savedVisibility!==null)showImagesControl.checked=savedVisibility!=='false';
+}catch{}
+function applyImageVisibility(){
+  document.body.classList.toggle('no-illustrations',!showImagesControl.checked);
+  try{localStorage.setItem('vtb-show-images',String(showImagesControl.checked))}catch{}
+}
+applyImageVisibility();
 
 function productsFor(id){return products.filter(p=>p.placements.some(x=>x.situation===id))}
 function statusMatch(p){return p.available||showDisabled}
@@ -313,10 +324,14 @@ function matchesSearch(...values){
   if(searchQuery.length<3)return true;
   return values.some(value=>normalized(value).includes(searchQuery));
 }
+function productIcon(product){
+  const id=String(product.id).padStart(3,"0");
+  return `<img class="product-illustration" src="assets/icons/products-blue-v1/${id}.png?v=20261015-flags" alt="" aria-hidden="true" loading="lazy" decoding="async" width="64" height="64">`;
+}
 function renderProductCards(){
   grid.classList.add('product-grid');
   const visibleProducts=products.filter(product=>statusMatch(product)&&matchesSearch(product.name,product.description,product.sourceCategory));
-  grid.innerHTML=visibleProducts.map(product=>`<article class="catalog-product-card"><span class="product-icon">${initials(product.name)}</span><div class="catalog-product-copy"><h3>${product.name}</h3><p>${product.description||product.sourceCategory}</p></div><span class="badge ${product.available?'':'planned'}">${product.available?'Доступна':'Выключена'}</span></article>`).join('');
+  grid.innerHTML=visibleProducts.map(product=>`<article class="catalog-product-card"><span class="product-icon">${productIcon(product)}</span><div class="catalog-product-copy"><h3>${product.name}</h3><p>${product.description||product.sourceCategory}</p></div><span class="badge ${product.available?'':'planned'}">${product.available?'Доступна':'Выключена'}</span></article>`).join('');
   if(!visibleProducts.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Попробуйте изменить запрос или показать выключенные продукты.</span></div>';
 }
 function renderCards(){
@@ -347,10 +362,9 @@ function renderCards(){
 
 function openDrawer(id){activeSituation=situations.find(s=>s.id===id);if(!activeSituation)return;document.querySelector('#drawerTitle').textContent=activeSituation.title;document.querySelector('#drawerSubtitle').textContent=activeSituation.subtitle;renderDrawer();backdrop.hidden=false;requestAnimationFrame(()=>drawer.classList.add('open'));drawer.setAttribute('aria-hidden','false');document.body.classList.add('no-scroll');document.querySelector('#closeDrawer').focus()}
 function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.classList.remove('no-scroll');setTimeout(()=>backdrop.hidden=true,280)}
-function initials(name){return name.replace(/[«»“”]/g,'').split(/[\s:-]+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()}
 function renderDrawer(){
   const all=productsFor(activeSituation.id).filter(statusMatch);drawerBody.innerHTML='';
-  activeSituation.groups.forEach(group=>{const items=all.filter(p=>p.placements.some(x=>x.situation===activeSituation.id&&x.group===group));if(!items.length)return;const section=document.createElement('section');section.className='product-group';section.innerHTML=`<h3>${group} · ${items.length}</h3><div class="product-list">${items.map(p=>`<article class="product"><span class="product-icon">${initials(p.name)}</span><div><h4>${p.name}</h4><p>${p.description||p.sourceCategory}</p></div><span class="badge ${p.available?'':'planned'}">${p.available?'Доступна':'Выключена'}</span></article>`).join('')}</div>`;drawerBody.appendChild(section)});
+  activeSituation.groups.forEach(group=>{const items=all.filter(p=>p.placements.some(x=>x.situation===activeSituation.id&&x.group===group));if(!items.length)return;const section=document.createElement('section');section.className='product-group';section.innerHTML=`<h3>${group} · ${items.length}</h3><div class="product-list">${items.map(p=>`<article class="product"><span class="product-icon">${productIcon(p)}</span><div><h4>${p.name}</h4><p>${p.description||p.sourceCategory}</p></div><span class="badge ${p.available?'':'planned'}">${p.available?'Доступна':'Выключена'}</span></article>`).join('')}</div>`;drawerBody.appendChild(section)});
   if(!drawerBody.children.length)drawerBody.innerHTML='<div class="no-products">В этой группе пока нет продуктов с выбранным статусом.</div>';
 }
 
@@ -358,6 +372,7 @@ document.addEventListener('click',e=>{const open=e.target.closest('[data-open]')
 groupingVersionControl.addEventListener('change',()=>applyGroupingVersion(groupingVersionControl.value));
 showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;removedCategoryNote.hidden=!showChanges;renderCards()});
 showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer();if(catalogMode==='products')renderCards()});
+showImagesControl.addEventListener('change',applyImageVisibility);
 catalogSearch.addEventListener('input',()=>{searchQuery=normalized(catalogSearch.value.trim());renderCards()});
 catalogViewButton.addEventListener('click',()=>{
   catalogMode=catalogMode==='situations'?'products':'situations';

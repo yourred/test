@@ -91,4 +91,21 @@ body{font-size:15px}
 .product p{font-size:11.5px}
 .catalog-product-copy h3{font-size:15px}
 .catalog-search input{font-size:14px}
+.product{grid-template-columns:56px minmax(0,1fr) auto;align-items:center}
+.product-icon{width:56px;height:56px;border-radius:0;background:transparent;overflow:visible}
+.product-illustration{display:block;width:56px;height:56px;object-fit:contain;pointer-events:none}
+.catalog-product-card{grid-template-columns:64px minmax(0,1fr);column-gap:14px;row-gap:8px}
+.catalog-product-card>.product-icon{grid-column:1;grid-row:1/3;width:64px;height:64px;align-self:center}
+.catalog-product-card .product-illustration{width:64px;height:64px}
+.catalog-product-copy{grid-column:2}
+.catalog-product-card>.badge{grid-column:2;justify-self:start}
+@media(max-width:700px){.product{grid-template-columns:56px minmax(0,1fr)}.catalog-product-card{grid-template-columns:64px minmax(0,1fr)}}
 @media(max-width:700px){.section-heading h2{font-size:25px}.situation-card{grid-template-columns:minmax(0,1fr) 68px;min-height:132px}.situation-icon{width:68px;height:68px}}
+
+/* Image visibility applies to both grouping versions, the catalog and the drawer. */
+.catalog-toolbar{flex-wrap:wrap}
+.no-illustrations .situation-icon,.no-illustrations .product-icon{display:none}
+.no-illustrations .situation-card,.no-illustrations .catalog-product-card{grid-template-columns:minmax(0,1fr)}
+.no-illustrations .catalog-product-copy,.no-illustrations .catalog-product-card>.badge{grid-column:1}
+.no-illustrations .product{grid-template-columns:minmax(0,1fr) auto}
+@media(max-width:700px){.no-illustrations .product{grid-template-columns:minmax(0,1fr)}.no-illustrations .product>.badge{grid-column:1}}
