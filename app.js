@@ -389,6 +389,7 @@ try{
 }catch{}
 function applyImageVisibility(){
   document.body.classList.toggle('no-illustrations',!showImagesControl.checked);
+  if(drawer.classList.contains('open'))prepareDrawerImages();
   try{localStorage.setItem('vtb-show-images',String(showImagesControl.checked))}catch{}
 }
 applyImageVisibility();
@@ -457,6 +458,27 @@ function renderCards(){
 }
 
 let drawerTrigger=null;
+let drawerImageRequest=0;
+async function prepareDrawerImages(){
+  const request=++drawerImageRequest;
+  const content=document.querySelector('#drawerScroll');
+  drawer.classList.add('images-loading');content.setAttribute('aria-busy','true');
+  const images=showImagesControl.checked?[...content.querySelectorAll('img')]:[];
+  await Promise.all(images.map(async image=>{
+    image.loading='eager';image.classList.remove('image-unavailable');
+    let timer;
+    try{
+      await Promise.race([
+        image.decode(),
+        new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Image timeout')),12000)})
+      ]);
+    }catch{if(request===drawerImageRequest)image.classList.add('image-unavailable')}
+    finally{clearTimeout(timer)}
+  }));
+  // A closed or newly opened situation must not be revealed by an older request.
+  if(request!==drawerImageRequest)return;
+  drawer.classList.remove('images-loading');content.setAttribute('aria-busy','false');
+}
 function openDrawer(id){
   activeSituation=situations.find(s=>s.id===id);if(!activeSituation||activeSituation.special)return;
   drawerTrigger=document.activeElement;
@@ -472,15 +494,18 @@ function openDrawer(id){
   document.querySelector('#closeDrawer').focus();
 }
 function closeDrawer(){
+  drawerImageRequest++;
   drawer.classList.remove('open');backdrop.hidden=true;
   document.body.classList.remove('no-scroll');document.querySelector('.cards-only').inert=false;
   if(drawerTrigger?.isConnected)drawerTrigger.focus();
   drawer.setAttribute('aria-hidden','true');drawer.inert=true;
 }
 function renderDrawer(){
+  drawer.classList.add('images-loading');
   const all=productsFor(activeSituation.id).filter(statusMatch);drawerBody.innerHTML='';
   activeSituation.groups.forEach(group=>{const items=all.filter(p=>p.placements.some(x=>x.situation===activeSituation.id&&x.group===group));if(!items.length)return;const section=document.createElement('section');section.className='product-group';section.innerHTML=`<div class="product-list">${items.map(p=>`<a href="product.html?product=${p.id}" class="product"><span class="product-icon">${productIcon(p)}</span><div><h4>${p.name}</h4><p>${p.description||p.sourceCategory}</p></div><span class="badge ${p.available?'':'planned'}">${p.available?'Доступна':'Выключена'}</span></a>`).join('')}</div>`;drawerBody.appendChild(section)});
   if(!drawerBody.children.length)drawerBody.innerHTML='<div class="no-products">В этой группе пока нет продуктов с выбранным статусом.</div>';
+  prepareDrawerImages();
 }
 
 function setSettingsOpen(open){catalogSettings.hidden=!open;settingsButton.setAttribute('aria-expanded',String(open))}
