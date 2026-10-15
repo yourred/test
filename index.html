@@ -6,12 +6,24 @@
   <meta name="description" content="Прототип витрины продуктов и услуг для бизнеса по жизненным ситуациям">
   <title>Сервисы для бизнеса — жизненные ситуации</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23005BFF'/%3E%3Cpath d='M17 21h30l-5 7H22zm4 11h22l-5 7H26zm6 11h11l-4 6h-3z' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20261015-image-toggle">
+  <link rel="stylesheet" href="styles.css?v=20261015-product-landing">
 </head>
 <body>
   <main class="cards-only">
     <section class="catalog" id="situations">
-      <div class="catalog-toolbar">
+      <div class="catalog-header" id="catalogHeader">
+        <nav class="catalog-sections" aria-label="Разделы продуктов">
+          <button type="button" class="catalog-section selected" data-section="all" aria-pressed="true">Продукты и услуги</button>
+          <button type="button" class="catalog-section" data-section="mine" aria-pressed="false">Мои продукты</button>
+        </nav>
+        <div class="catalog-search-row">
+          <button class="settings-toggle" id="settingsButton" type="button" aria-label="Настройки витрины" aria-expanded="false" aria-controls="catalogSettings"><span aria-hidden="true"><i></i><i></i><i></i></span></button>
+          <label class="catalog-search" for="catalogSearch">
+            <span class="search-icon" aria-hidden="true"></span>
+            <input id="catalogSearch" type="search" placeholder="Поиск по продуктам и ситуациям" autocomplete="off">
+          </label>
+        </div>
+        <div class="catalog-toolbar settings-panel" id="catalogSettings" aria-label="Настройки витрины" hidden>
         <label class="version-control" for="groupingVersion">
           <span>Версия группировки</span>
           <select id="groupingVersion">
@@ -35,10 +47,18 @@
           <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
         </label>
       </div>
-      <label class="catalog-search" for="catalogSearch">
-        <span class="search-icon" aria-hidden="true"></span>
-        <input id="catalogSearch" type="search" placeholder="Поиск по продуктам и ситуациям" autocomplete="off">
-      </label>
+      <nav class="category-filters" aria-label="Категории продуктов">
+        <div class="category-filter-row" id="categoryFilterRow">
+          <div class="catalog-top-actions" id="catalogTopActions" hidden></div>
+          <button class="category-filter selected" type="button" data-category="all" aria-pressed="true">Все</button>
+          <div class="category-primary" id="categoryPrimary"></div>
+          <button class="category-more" type="button" id="categoryMore" aria-expanded="false" aria-controls="categoryOverflow" hidden>Ещё <span aria-hidden="true">⌄</span></button>
+        </div>
+        <div class="category-overflow" id="categoryOverflow" hidden></div>
+        <div class="category-measure-row" id="categoryMeasure" aria-hidden="true" inert></div>
+      </nav>
+      </div>
+      <div class="catalog-scroll" id="catalogScroll">
       <div class="change-legend" id="changeLegend" hidden>
         <span class="legend-title">Изменения в новой версии</span>
         <span class="legend-item"><i class="legend-swatch changed"></i>Изменено название или состав</span>
@@ -51,21 +71,26 @@
         <span>«Внесение изменений в ЕГРИП и ЕГРЮЛ»: «Начать или изменить бизнес» → «Работать с документами и электронной подписью»</span>
       </div>
       <div class="situation-grid" id="situationGrid"></div>
-      <div class="catalog-view-actions">
+      <div class="catalog-view-actions" id="catalogBottomActions">
         <button class="all-products-button" id="catalogViewButton" type="button">Все продукты</button>
+      </div>
       </div>
     </section>
   </main>
 
   <div class="backdrop" id="backdrop" hidden></div>
-  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle" inert>
     <div class="drawer-head">
-      <div><span class="eyebrow">Подборка решений</span><h2 id="drawerTitle"></h2><p id="drawerSubtitle"></p></div>
+      <div><h2 id="drawerTitle"></h2><p id="drawerSubtitle"></p></div>
       <button class="close" id="closeDrawer" aria-label="Закрыть">×</button>
     </div>
-    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-scroll" id="drawerScroll">
+      <div class="drawer-hero"><img id="drawerHeroImage" alt="" width="1200" height="675"></div>
+      <div class="drawer-body" id="drawerBody"></div>
+    </div>
   </aside>
 
-  <script src="app.js?v=20261015-image-toggle"></script>
+  <script src="legacy-categories.js?v=20261015-catalog-layout"></script>
+  <script src="app.js?v=20261015-product-landing"></script>
 </body>
 </html>
