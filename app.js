@@ -415,7 +415,7 @@ function matchesSearch(...values){
 }
 function productIcon(product){
   const id=String(product.id).padStart(3,"0");
-  return `<img class="product-illustration" src="assets/icons/products-blue-v1/${id}.png?v=20261015-flags" alt="" aria-hidden="true" loading="lazy" decoding="async" width="64" height="64">`;
+  return `<img class="product-illustration" src="assets/icons/products-web-v2/${id}.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="64" height="64">`;
 }
 function renderProductCards(){
   grid.classList.add('product-grid');
