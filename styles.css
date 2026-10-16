@@ -172,8 +172,8 @@ html,body{height:100%;overflow:hidden}
 .catalog-section:focus-visible{outline:3px solid #94b9ff;outline-offset:5px;border-radius:3px}
 .my-products-view .category-filters{display:none}
 .connected-product{position:relative;padding-bottom:46px}
-.connected-check{position:absolute;right:16px;bottom:14px;width:24px;height:24px;border-radius:50%;background:var(--blue);color:transparent;font-size:0;display:grid;place-items:center}
-.connected-check::before{content:"";display:block;width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:translateY(-2px) rotate(45deg)}
+.connected-check{position:absolute;right:16px;bottom:14px;width:18px;height:18px;background:transparent;color:transparent;font-size:0;display:grid;place-items:center}
+.connected-check::before{content:"";display:block;width:6px;height:11px;border:solid var(--blue);border-width:0 2px 2px 0;transform:translateY(-2px) rotate(45deg)}
 a.catalog-product-card,a.product{color:inherit;text-decoration:none;cursor:pointer}
 a.catalog-product-card:focus-visible,a.product:focus-visible{outline:3px solid #94b9ff;outline-offset:3px}
 @media(max-width:600px){.catalog-sections{gap:20px;margin-bottom:16px}.catalog-section{font-size:18px}}
