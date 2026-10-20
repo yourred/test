@@ -1,5 +1,5 @@
 const currentSituations = [
-  {id:'similar',title:'Компании, похожие на вашу, выбирают',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
+  {id:'similar',title:'Новые продукты',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
   {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы']},
   {id:'money',title:'Управлять деньгами',subtitle:'Счета, карты, наличные и управление ликвидностью',accent:'#3261C8',groups:['Продукты и сервисы']},
   {id:'sales',title:'Начать или увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы']},
@@ -14,7 +14,7 @@ const currentSituations = [
 ];
 
 const newSituations = [
-  {id:'similar',title:'Компании, похожие на вашу, выбирают',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
+  {id:'similar',title:'Новые продукты',subtitle:'',accent:'#6A5AE0',groups:[],special:true},
   {id:'daily',title:'Наладить ежедневную работу',subtitle:'Пакеты услуг, интеграции и сервисы для регулярных задач',accent:'#0A67E8',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> без изменений.<br><strong>Состав:</strong> «Самозанятость»: «Начать или изменить бизнес» → «Наладить ежедневную работу»; «Мультиконтроль»: «Управлять деньгами» → «Наладить ежедневную работу»; «Корпоративное управление»: «Управлять деньгами» → «Наладить ежедневную работу».'},
   {id:'sales',title:'Начать и увеличить продажи',subtitle:'Приём оплаты, кассы, продвижение и клиентские сервисы',accent:'#7A55E7',groups:['Продукты и сервисы'],changeType:'changed',changeNote:'<strong>Название:</strong> «Начать или увеличить продажи» → «Начать и увеличить продажи».<br><strong>Состав:</strong> без изменений.'},
   {id:'savings',title:'Сохранить и приумножить деньги',subtitle:'Депозиты, остатки, резервы и инвестиционные решения',accent:'#3261C8',groups:['Продукты и сервисы']},
@@ -284,6 +284,9 @@ products.forEach(p=>p.placements=classify(p));
 const grid=document.querySelector('#situationGrid');
 const backdrop=document.querySelector('#backdrop'), drawer=document.querySelector('#drawer'), drawerBody=document.querySelector('#drawerBody');
 const groupingVersionControl=document.querySelector('#groupingVersion');
+const targetInsights=document.querySelector('#targetInsights');
+const targetPeerProducts=document.querySelector('#targetPeerProducts');
+const similarTitle=document.querySelector('#similarTitle');
 const changeLegend=document.querySelector('#changeLegend');
 const removedCategoryNote=document.querySelector('#removedCategoryNote');
 const showChangesWrapper=document.querySelector('#showChangesWrapper');
@@ -302,6 +305,14 @@ const categoryPrimary=document.querySelector('#categoryPrimary');
 const categoryOverflow=document.querySelector('#categoryOverflow');
 const categoryMore=document.querySelector('#categoryMore');
 const categoryMeasure=document.querySelector('#categoryMeasure');
+const globalSearchInput=document.querySelector('#globalSearchInput');
+const globalSearchResults=document.querySelector('#globalSearchResults');
+const profileButton=document.querySelector('#profileButton');
+const profileDropdown=document.querySelector('#profileDropdown');
+const workspaceSidebar=document.querySelector('#workspaceSidebar');
+const workspaceSidebarToggle=document.querySelector('#workspaceSidebarToggle');
+const workspaceMore=document.querySelector('#workspaceMore');
+const workspaceSidebarExtra=document.querySelector('#workspaceSidebarExtra');
 const legacyProductCategories=window.legacyProductCategories||[];
 let activeSituation=null,showDisabled=showDisabledControl.checked,showChanges=showChangesControl.checked;
 let catalogMode='situations',searchQuery='';
@@ -360,9 +371,10 @@ function layoutCategoryFilters(){
 function setCatalogMode(mode){
   catalogMode=mode;
   const productsVisible=mode==='products';
-  catalogTopActions.hidden=!productsVisible;
-  catalogBottomActions.hidden=productsVisible;
-  (productsVisible?catalogTopActions:catalogBottomActions).appendChild(catalogViewButton);
+  const mvp=['mvp','target'].includes(groupingVersionControl.value);
+  catalogTopActions.hidden=!productsVisible||mvp;
+  catalogBottomActions.hidden=productsVisible&&!mvp;
+  (productsVisible&&!mvp?catalogTopActions:catalogBottomActions).appendChild(catalogViewButton);
   catalogViewButton.textContent=productsVisible?'По жизненным ситуациям':'Все продукты';
   catalogViewButton.setAttribute('aria-pressed',String(productsVisible));
   layoutCategoryFilters();
@@ -397,12 +409,17 @@ applyImageVisibility();
 function productsFor(id){return products.filter(p=>p.placements.some(x=>x.situation===id))}
 function statusMatch(p){return p.available||showDisabled}
 function applyGroupingVersion(version){
-  const isNew=version==='new';
+  const isNew=version!=='current';
+  const showComparison=version==='new';
+  const isMvpFamily=version==='mvp'||version==='target';
+  document.body.classList.toggle('mvp-mode',isMvpFamily);
+  document.body.classList.toggle('target-mode',version==='target');
+  document.documentElement.classList.toggle('mvp-page-scroll',isMvpFamily);
   situations=isNew?newSituations:currentSituations;
   activeAssignments=isNew?newModelAssignments:modelAssignments;
-  showChangesWrapper.hidden=!isNew;
-  changeLegend.hidden=!isNew||!showChanges;
-  removedCategoryNote.hidden=!isNew||!showChanges;
+  showChangesWrapper.hidden=!showComparison;
+  changeLegend.hidden=!showComparison||!showChanges;
+  removedCategoryNote.hidden=!showComparison||!showChanges;
   products.forEach(p=>p.placements=classify(p));
   if(drawer.classList.contains('open'))closeDrawer();
   activeSituation=null;
@@ -417,23 +434,56 @@ function productIcon(product){
   const id=String(product.id).padStart(3,"0");
   return `<img class="product-illustration" src="assets/icons/products-web-v2/${id}.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="64" height="64">`;
 }
+function productCardMarkup(product,{mine=false,compact=false}={}){
+  return `<a href="product.html?product=${product.id}" class="catalog-product-card${mine?' connected-product':''}${compact?' tablecloth-product':''}"><span class="product-icon">${productIcon(product)}</span><div class="catalog-product-copy"><h3>${product.name}</h3><p>${product.description||product.sourceCategory}</p></div>${mine?'<span class="connected-check" role="img" aria-label="Подключён" title="Подключён">✓</span>':`<span class="badge ${product.available?'':'planned'}">${product.available?'Доступна':'Выключена'}</span>`}</a>`;
+}
+function renderProductTablecloth(){
+  grid.classList.remove('product-grid');
+  grid.classList.add('product-tablecloth');
+  const eligible=products.filter(product=>statusMatch(product)&&matchesSearch(product.name,product.description,product.sourceCategory));
+  const byName=new Map(eligible.map(product=>[product.name,product]));
+  const groupedNames=new Set();
+  const groups=legacyProductCategories.map(category=>{
+    const items=category.productNames.map(name=>byName.get(name)).filter(Boolean);
+    items.forEach(product=>groupedNames.add(product.name));
+    return {label:category.label,items};
+  }).filter(group=>group.items.length);
+  const other=eligible.filter(product=>!groupedNames.has(product.name));
+  if(other.length)groups.push({label:'Другие продукты и сервисы',items:other});
+  grid.innerHTML=groups.map(group=>`<section class="product-category-sheet"><header><h2>${group.label}</h2><span>${group.items.length}</span></header><div class="product-category-list">${group.items.map(product=>productCardMarkup(product,{compact:true})).join('')}</div></section>`).join('');
+  if(!groups.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Попробуйте изменить запрос или показать выключенные продукты.</span></div>';
+}
 function renderProductCards(){
-  grid.classList.add('product-grid');
   const mine=productSection==='mine';
+  const grouped=!mine&&['mvp','target'].includes(groupingVersionControl.value);
+  if(grouped){renderProductTablecloth();return}
+  grid.classList.remove('product-tablecloth');
+  grid.classList.add('product-grid');
   const visibleProducts=products.filter(product=>(mine?connectedProductNames.has(product.name):statusMatch(product)&&matchesCategory(product))&&matchesSearch(product.name,product.description,product.sourceCategory));
-  grid.innerHTML=visibleProducts.map(product=>`<a href="product.html?product=${product.id}" class="catalog-product-card${mine?' connected-product':''}"><span class="product-icon">${productIcon(product)}</span><div class="catalog-product-copy"><h3>${product.name}</h3><p>${product.description||product.sourceCategory}</p></div>${mine?'<span class="connected-check" role="img" aria-label="Подключён" title="Подключён">✓</span>':`<span class="badge ${product.available?'':'planned'}">${product.available?'Доступна':'Выключена'}</span>`}</a>`).join('');
+  grid.innerHTML=visibleProducts.map(product=>productCardMarkup(product,{mine})).join('');
   if(!visibleProducts.length)grid.innerHTML='<div class="empty-state"><strong>Ничего не найдено</strong><span>Попробуйте изменить запрос или показать выключенные продукты.</span></div>';
 }
 function renderCards(){
   const mine=productSection==='mine';
+  const version=groupingVersionControl.value;
+  const mvp=version==='mvp'||version==='target';
+  const target=version==='target';
+  document.querySelector('#offersSection').hidden=mine||!mvp;
+  document.querySelector('#growthSection').hidden=mine||!mvp;
+  document.querySelector('#developmentServices').hidden=mine||!mvp;
+  document.querySelector('#similarProducts').hidden=mine||!mvp;
+  targetInsights.hidden=mine||!target;
+  targetPeerProducts.hidden=mine||!target;
+  similarTitle.textContent=target?'Вы интересовались':'Компании, похожие на вашу, выбирают';
   document.body.classList.toggle('my-products-view',mine);
-  catalogTopActions.hidden=mine||catalogMode!=='products';
-  catalogBottomActions.hidden=mine||catalogMode==='products';
+  catalogTopActions.hidden=mine||catalogMode!=='products'||mvp;
+  catalogBottomActions.hidden=mine||(catalogMode==='products'&&!mvp);
+  if(!mine)(catalogMode==='products'&&!mvp?catalogTopActions:catalogBottomActions).appendChild(catalogViewButton);
   const isNew=groupingVersionControl.value==='new';
   changeLegend.hidden=mine||!isNew||!showChanges;
   removedCategoryNote.hidden=mine||!isNew||!showChanges;
   if(mine||catalogMode==='products'){renderProductCards();return}
-  grid.classList.remove('product-grid');
+  grid.classList.remove('product-grid','product-tablecloth');
   grid.innerHTML='';
   situations.forEach((s,i)=>{
     if(s.special){
@@ -447,7 +497,7 @@ function renderCards(){
     const situationMatches=matchesSearch(s.title,s.subtitle);
     const productMatches=all.some(product=>matchesSearch(product.name,product.description,product.sourceCategory));
     if(searchQuery.length>=3&&!situationMatches&&!productMatches)return;
-    const showCardChange=showChanges&&Boolean(s.changeNote);
+    const showCardChange=groupingVersionControl.value==='new'&&showChanges&&Boolean(s.changeNote);
     const changeClass=showCardChange?(s.changeType==='new'?' new-card':' changed-card'):'';
     const changeLabel=s.changeType==='new'?'Новая карточка':'Изменено';
     const el=document.createElement('button');el.className=`situation-card${changeClass}`;el.style.setProperty('--accent',s.accent);el.dataset.open=s.id;
@@ -509,6 +559,16 @@ function renderDrawer(){
 }
 
 function setSettingsOpen(open){catalogSettings.hidden=!open;settingsButton.setAttribute('aria-expanded',String(open))}
+function setProfileOpen(open){profileDropdown.hidden=!open;profileButton.setAttribute('aria-expanded',String(open))}
+function closeGlobalSearch(){globalSearchResults.hidden=true;globalSearchInput.setAttribute('aria-expanded','false')}
+function renderGlobalSearch(){
+  const query=normalized(globalSearchInput.value.trim());
+  if(query.length<2){closeGlobalSearch();globalSearchResults.innerHTML='';return}
+  const found=products.filter(product=>matchesSearchValue(product,query)).slice(0,7);
+  globalSearchResults.innerHTML=found.length?found.map(product=>`<a role="option" href="product.html?product=${product.id}">${product.name}<small>${product.description||product.sourceCategory}</small></a>`).join(''):'<span class="global-search-empty">Ничего не найдено</span>';
+  globalSearchResults.hidden=false;globalSearchInput.setAttribute('aria-expanded','true');
+}
+function matchesSearchValue(product,query){return [product.name,product.description,product.sourceCategory].some(value=>normalized(value).includes(query))}
 document.querySelectorAll('[data-section]').forEach(button=>button.addEventListener('click',()=>{
   productSection=button.dataset.section;
   document.querySelectorAll('[data-section]').forEach(item=>{const selected=item===button;item.classList.toggle('selected',selected);item.setAttribute('aria-pressed',String(selected))});
@@ -518,7 +578,23 @@ document.querySelectorAll('[data-section]').forEach(button=>button.addEventListe
   catalogScroll.scrollTo({top:0,behavior:'auto'});
 }));
 settingsButton.addEventListener('click',()=>setSettingsOpen(catalogSettings.hidden));
-document.addEventListener('click',e=>{if(!catalogSettings.hidden&&!e.target.closest('#catalogSettings')&&!e.target.closest('#settingsButton'))setSettingsOpen(false);const category=e.target.closest('[data-category]');if(category&&!category.closest('#categoryMeasure'))selectCategory(category.dataset.category);const open=e.target.closest('[data-open]');if(open)openDrawer(open.dataset.open)});
+profileButton.addEventListener('click',()=>setProfileOpen(profileDropdown.hidden));
+workspaceSidebarToggle.addEventListener('click',()=>{
+  const collapsed=workspaceSidebar.classList.toggle('collapsed');
+  document.body.classList.toggle('workspace-sidebar-collapsed',collapsed);
+  workspaceSidebarToggle.setAttribute('aria-expanded',String(!collapsed));
+  workspaceSidebarToggle.setAttribute('aria-label',collapsed?'Развернуть боковое меню':'Свернуть боковое меню');
+  workspaceSidebarToggle.querySelector('span').textContent=collapsed?'››':'‹‹';
+});
+workspaceMore.addEventListener('click',()=>{
+  const expanded=workspaceSidebarExtra.hidden;
+  workspaceSidebarExtra.hidden=!expanded;
+  workspaceMore.setAttribute('aria-expanded',String(expanded));
+  workspaceMore.querySelector('span').textContent=expanded?'Скрыть':'Ещё';
+});
+globalSearchInput.addEventListener('input',renderGlobalSearch);
+globalSearchInput.addEventListener('focus',renderGlobalSearch);
+document.addEventListener('click',e=>{if(!catalogSettings.hidden&&!e.target.closest('#catalogSettings')&&!e.target.closest('#settingsButton'))setSettingsOpen(false);if(!profileDropdown.hidden&&!e.target.closest('.profile-menu'))setProfileOpen(false);if(!e.target.closest('#globalSearch'))closeGlobalSearch();const category=e.target.closest('[data-category]');if(category&&!category.closest('#categoryMeasure'))selectCategory(category.dataset.category);const open=e.target.closest('[data-open]');if(open)openDrawer(open.dataset.open)});
 groupingVersionControl.addEventListener('change',()=>applyGroupingVersion(groupingVersionControl.value));
 showChangesControl.addEventListener('change',()=>{showChanges=showChangesControl.checked;changeLegend.hidden=!showChanges;removedCategoryNote.hidden=!showChanges;renderCards()});
 showDisabledControl.addEventListener('change',()=>{showDisabled=showDisabledControl.checked;if(activeSituation&&drawer.classList.contains('open'))renderDrawer();if(catalogMode==='products')renderCards()});
@@ -535,5 +611,6 @@ if(typeof ResizeObserver!=='undefined')new ResizeObserver(layoutCategoryFilters)
 else window.addEventListener('resize',layoutCategoryFilters);
 if(document.fonts)document.fonts.ready.then(layoutCategoryFilters);
 layoutCategoryFilters();
-document.querySelector('#closeDrawer').addEventListener('click',closeDrawer);backdrop.addEventListener('click',closeDrawer);document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!catalogSettings.hidden){setSettingsOpen(false);settingsButton.focus()}if(drawer.classList.contains('open'))closeDrawer()}if(e.key==='Tab'&&drawer.classList.contains('open')){const controls=[...drawer.querySelectorAll('button,a[href],input,select,[tabindex="0"]')].filter(el=>!el.disabled);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
-renderCards();
+document.querySelector('#closeDrawer').addEventListener('click',closeDrawer);backdrop.addEventListener('click',closeDrawer);document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGlobalSearch();setProfileOpen(false);if(!catalogSettings.hidden){setSettingsOpen(false);settingsButton.focus()}if(drawer.classList.contains('open'))closeDrawer()}if(e.key==='Tab'&&drawer.classList.contains('open')){const controls=[...drawer.querySelectorAll('button,a[href],input,select,[tabindex="0"]')].filter(el=>!el.disabled);const first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+applyGroupingVersion(groupingVersionControl.value);
+

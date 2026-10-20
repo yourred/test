@@ -6,9 +6,88 @@
   <meta name="description" content="Прототип витрины продуктов и услуг для бизнеса по жизненным ситуациям">
   <title>Сервисы для бизнеса — жизненные ситуации</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23005BFF'/%3E%3Cpath d='M17 21h30l-5 7H22zm4 11h22l-5 7H26zm6 11h11l-4 6h-3z' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20261016-blue-check">
+  <link rel="stylesheet" href="styles.css?v=20261019-dense-tablecloth">
 </head>
 <body>
+  <header class="app-topbar">
+    <button class="settings-toggle shell-menu-button" id="settingsButton" type="button" aria-label="Настройки макета" aria-expanded="false" aria-controls="catalogSettings"><span aria-hidden="true"><i></i><i></i><i></i></span></button>
+    <nav class="app-navigation" aria-label="Основная навигация">
+      <a href="placeholder.html?page=Главная">Главная</a>
+      <a href="placeholder.html?page=Платежи">Платежи</a>
+      <a href="placeholder.html?page=Сводка">Сводка</a>
+      <a href="placeholder.html?page=Календарь">Календарь</a>
+      <a href="placeholder.html?page=Бухгалтерия%20для%20бизнеса">Бухгалтерия для бизнеса</a>
+      <a class="active" href="index.html" aria-current="page"><span aria-hidden="true">★</span> Сервисы</a>
+    </nav>
+    <div class="global-search" id="globalSearch">
+      <label for="globalSearchInput">Поиск</label>
+      <span class="global-search-icon" aria-hidden="true"></span>
+      <input id="globalSearchInput" type="search" autocomplete="off" aria-label="Поиск по продуктам" aria-controls="globalSearchResults" aria-expanded="false">
+      <div class="global-search-results" id="globalSearchResults" role="listbox" hidden></div>
+    </div>
+    <button class="notification-button" type="button" aria-label="Уведомления" title="Уведомления"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 8.5h18C21 16 18 16 18 9Z"/><path d="M9.7 20a2.5 2.5 0 0 0 4.6 0"/></svg></button>
+    <div class="profile-menu">
+      <button class="profile-button" id="profileButton" type="button" aria-expanded="false" aria-controls="profileDropdown">
+        <span class="profile-avatar" aria-hidden="true"><i></i></span>
+        <span class="profile-copy"><strong>ООО «Тест»</strong><small>Тестов Тест Тестович</small></span>
+        <span class="profile-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="profile-dropdown" id="profileDropdown" hidden>
+        <strong>ООО «Тест»</strong><span>Тестов Тест Тестович</span>
+      </div>
+    </div>
+    <a class="logout-button" href="placeholder.html?page=Выход" aria-label="Выйти" title="Выйти"><span aria-hidden="true">↪</span></a>
+  </header>
+  <aside class="workspace-sidebar" id="workspaceSidebar" aria-label="Быстрые действия и сервисы">
+    <div class="workspace-sidebar-head">
+      <h2>Быстрые действия</h2>
+      <button class="workspace-sidebar-toggle" id="workspaceSidebarToggle" type="button" aria-label="Свернуть боковое меню" aria-expanded="true"><span aria-hidden="true">‹‹</span></button>
+    </div>
+    <div class="workspace-sidebar-content">
+      <nav class="workspace-sidebar-list" aria-label="Быстрые действия">
+        <a href="placeholder.html?page=Выписка"><i aria-hidden="true"></i><span>Выписка</span></a>
+        <a href="placeholder.html?page=Платёж%20ЮЛ%20или%20ИП"><i aria-hidden="true"></i><span>Платёж ЮЛ или ИП</span></a>
+        <a href="placeholder.html?page=Оплатить%20по%20СБП"><i aria-hidden="true"></i><span>Оплатить по СБП</span></a>
+        <a href="placeholder.html?page=Платёж%20в%20бюджет"><i aria-hidden="true"></i><span>Платёж в бюджет</span></a>
+        <a href="placeholder.html?page=Платёж%20нерезиденту"><i aria-hidden="true"></i><span>Платёж нерезиденту</span></a>
+        <div class="workspace-sidebar-extra" id="workspaceSidebarExtra" hidden>
+          <a href="placeholder.html?page=Выписка%201"><i aria-hidden="true"></i><span>Выписка 1</span></a>
+          <a href="placeholder.html?page=Платёж%20ЮЛ%20или%20ИП%201"><i aria-hidden="true"></i><span>Платёж ЮЛ или ИП 1</span></a>
+          <a href="placeholder.html?page=Оплатить%20по%20СБП%201"><i aria-hidden="true"></i><span>Оплатить по СБП 1</span></a>
+        </div>
+        <button class="workspace-more" id="workspaceMore" type="button" aria-expanded="false" aria-controls="workspaceSidebarExtra"><b aria-hidden="true">•••</b><span>Ещё</span></button>
+      </nav>
+      <h2 class="workspace-services-title">Сервисы</h2>
+      <nav class="workspace-sidebar-list" aria-label="Сервисы">
+        <a href="placeholder.html?page=Справки"><i aria-hidden="true"></i><span>Справки</span></a>
+        <a href="placeholder.html?page=Управление%20тарифами"><i aria-hidden="true"></i><span>Управление тарифами</span></a>
+        <a href="placeholder.html?page=Бизнес-карты"><i aria-hidden="true"></i><span>Бизнес-карты</span></a>
+        <a href="placeholder.html?page=Онлайн%20конверсия"><i aria-hidden="true"></i><span>Онлайн конверсия</span></a>
+        <a href="placeholder.html?page=ВЭД%20и%20валютный%20контроль"><i aria-hidden="true"></i><span>ВЭД и валютный контроль</span></a>
+      </nav>
+      <nav class="workspace-sidebar-list workspace-sidebar-footer" aria-label="Настройки">
+        <a href="placeholder.html?page=Помощь"><i class="help-icon" aria-hidden="true">?</i><span>Помощь</span></a>
+        <a href="placeholder.html?page=Настройка%20меню"><i class="gear-icon" aria-hidden="true">⚙</i><span>Настройка меню</span></a>
+      </nav>
+    </div>
+  </aside>
+  <section class="promo-carousel-shell" aria-label="Рекомендуемые продукты">
+    <div class="promo-carousel" id="promoCarousel">
+      <a class="promo-card promo-card-featured" href="placeholder.html?page=Сопровождение%20контрактов">
+        <span class="promo-interest">Вы интересовались</span>
+        <div class="promo-card-copy"><h2>Сопровождение контрактов</h2><p>Эксклюзивные предложения и персональные условия для вашего бизнеса</p></div>
+        <img src="assets/promos/contract-support.png" alt="" aria-hidden="true" width="720" height="480">
+      </a>
+      <a class="promo-card promo-card-trade" href="placeholder.html?page=Услуги%20для%20ВЭД">
+        <div class="promo-card-copy"><h2>Услуги для ВЭД</h2><p>Надёжные международные расчёты через собственные каналы связи</p></div>
+        <img src="assets/promos/foreign-trade.png" alt="" aria-hidden="true" width="720" height="480">
+      </a>
+      <a class="promo-card promo-card-broker" href="product.html?product=11">
+        <div class="promo-card-copy"><h2>Брокерский счёт</h2><p>Доступ к широкому набору инвестиционных инструментов</p></div>
+        <img src="assets/promos/brokerage.png" alt="" aria-hidden="true" width="720" height="480">
+      </a>
+    </div>
+  </section>
   <main class="cards-only">
     <section class="catalog" id="situations">
       <div class="catalog-header" id="catalogHeader">
@@ -17,7 +96,6 @@
           <button type="button" class="catalog-section" data-section="mine" aria-pressed="false">Мои продукты</button>
         </nav>
         <div class="catalog-search-row">
-          <button class="settings-toggle" id="settingsButton" type="button" aria-label="Настройки витрины" aria-expanded="false" aria-controls="catalogSettings"><span aria-hidden="true"><i></i><i></i><i></i></span></button>
           <label class="catalog-search" for="catalogSearch">
             <span class="search-icon" aria-hidden="true"></span>
             <input id="catalogSearch" type="search" placeholder="Поиск по продуктам и ситуациям" autocomplete="off">
@@ -25,8 +103,10 @@
         </div>
         <div class="catalog-toolbar settings-panel" id="catalogSettings" aria-label="Настройки витрины" hidden>
         <label class="version-control" for="groupingVersion">
-          <span>Версия группировки</span>
+          <span>Режим макета</span>
           <select id="groupingVersion">
+            <option value="mvp" selected>MVP</option>
+            <option value="target">Целевая</option>
             <option value="current">Текущая версия</option>
             <option value="new">Новая версия</option>
           </select>
@@ -74,6 +154,91 @@
       <div class="catalog-view-actions" id="catalogBottomActions">
         <button class="all-products-button" id="catalogViewButton" type="button">Все продукты</button>
       </div>
+      <section class="similar-products" id="similarProducts" aria-labelledby="similarTitle">
+        <h2 id="similarTitle">Компании, похожие на вашу, выбирают</h2>
+        <div class="similar-products-list">
+          <a class="similar-product" href="placeholder.html?page=Банковская%20экспресс-гарантия"><span><img src="assets/similar-v1/express-guarantee.png" alt="" aria-hidden="true"></span><strong>Банковская<br>экспресс-гарантия</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Маркетинговые%20исследования"><span><img src="assets/similar-v1/marketing-research.png" alt="" aria-hidden="true"></span><strong>Маркетинговые<br>исследования</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Бизнес-карты"><span><img src="assets/similar-v1/business-cards.png" alt="" aria-hidden="true"></span><strong>Бизнес-карты</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Бухгалтерия%20ВТБ%20для%20бизнеса"><span><img src="assets/similar-v1/accounting.png" alt="" aria-hidden="true"></span><strong>Бухгалтерия<br>ВТБ для бизнеса</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Проверка%20зарубежного%20партнёра"><span><img src="assets/similar-v1/foreign-partner.png" alt="" aria-hidden="true"></span><strong>Проверка зарубежного<br>партнёра</strong></a>
+        </div>
+      </section>
+      <section class="content-carousel offers-section" id="offersSection" aria-labelledby="offersTitle">
+        <h2 id="offersTitle">Акции и спецпредложения</h2>
+        <div class="content-carousel-viewport">
+          <div class="content-carousel-track" id="offersTrack">
+            <a class="offer-card offer-blue" href="placeholder.html?page=Топливо%20для%20бизнеса"><span class="offer-copy"><strong>Топливо для бизнеса</strong><small>Возвращайте часть расходов при оплате корпоративной картой</small></span><img src="assets/offers-v1/fuel-card.png" alt="" aria-hidden="true"></a>
+            <a class="offer-card offer-purple" href="placeholder.html?page=Бизнес-карта"><span class="offer-copy"><strong>Больше пользы с бизнес-картой</strong><small>Вознаграждения за ежедневные расходы компании</small></span><img src="assets/offers-v1/business-card.png" alt="" aria-hidden="true"></a>
+            <a class="offer-card offer-navy" href="placeholder.html?page=Международные%20расчёты"><span class="offer-copy"><strong>Международные расчёты</strong><small>Платежи зарубежным партнёрам с поддержкой ВЭД</small></span><img src="assets/offers-v1/international.png" alt="" aria-hidden="true"></a>
+          </div>
+        </div>
+      </section>
+      <section class="target-insights" id="targetInsights" aria-label="Анализ профиля компании и рекомендации" hidden>
+        <article class="company-analysis-card">
+          <header class="insight-card-heading">
+            <div><span>Для ООО «Тест»</span><h2>Анализ профиля компании</h2></div>
+            <img src="assets/icons/new-categories/01-similar-companies-v3-cartoon.png" alt="" aria-hidden="true">
+          </header>
+          <div class="achievement-list" aria-label="Достижения компании">
+            <span class="achievement achievement-gold" title="Финансовая дисциплина"><i>★</i><b>Финансовая<br>дисциплина</b></span>
+            <span class="achievement achievement-blue" title="Надёжный партнёр"><i>✓</i><b>Надёжный<br>партнёр</b></span>
+            <span class="achievement achievement-navy" title="Международный бизнес"><i>↗</i><b>Международный<br>бизнес</b></span>
+            <span class="achievement achievement-cyan" title="Цифровой бизнес"><i>◇</i><b>Цифровой<br>бизнес</b></span>
+            <span class="achievement achievement-violet" title="Команда растёт"><i>＋</i><b>Команда<br>растёт</b></span>
+            <span class="achievement achievement-silver" title="Новые возможности"><i>✦</i><b>Новые<br>возможности</b></span>
+          </div>
+          <div class="company-profile-score">
+            <div class="product-total"><strong>24</strong><span>Всего продуктов</span></div>
+            <div class="product-mix">
+              <div class="product-mix-bar" aria-label="Структура подключённых продуктов"><i></i><i></i><i></i></div>
+              <div class="product-mix-labels"><span>Финансовые<br>продукты</span><span>Бухгалтерия</span><span>Интернет-<br>продвижение</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="ai-recommendations-card">
+          <header class="ai-heading"><span class="ai-mark" aria-hidden="true">✦</span><div><span>Персонально для вашего бизнеса</span><h2>Рекомендации от ИИ</h2></div></header>
+          <a class="ai-recommendation" href="placeholder.html?page=Депозиты">
+            <span class="recommendation-signal"><strong>&gt;5</strong><b>млн ₽ / мес</b><small>Входящие платежи</small></span>
+            <span class="recommendation-product"><img src="assets/icons/new-categories/04-grow-savings.png" alt="" aria-hidden="true"><span><strong>Депозиты</strong><small>Получайте доход от размещения свободных средств</small></span></span>
+          </a>
+          <a class="ai-recommendation" href="placeholder.html?page=Зарплатный%20проект">
+            <span class="recommendation-signal"><strong>236</strong><small>Платежей физлицам</small></span>
+            <span class="recommendation-product"><img src="assets/icons/new-categories/11-team-care.png" alt="" aria-hidden="true"><span><strong>Зарплатный проект</strong><small>Переводите зарплату сотрудникам онлайн</small></span></span>
+          </a>
+        </article>
+      </section>
+      <section class="content-carousel growth-section" id="growthSection" aria-labelledby="growthTitle">
+        <h2 id="growthTitle">Идеи для роста</h2>
+        <div class="content-carousel-viewport">
+          <div class="content-carousel-track" id="growthTrack">
+            <a class="growth-card" href="article.html?article=automation"><span class="growth-image"><img src="assets/growth-v1/automation.png" alt="" aria-hidden="true"></span><span class="growth-copy"><strong>Автоматизируйте рутину до найма новых людей</strong><small>Как найти процессы, которые можно передать цифровым сервисам</small></span><i aria-hidden="true">↗</i></a>
+            <a class="growth-card" href="article.html?article=financing"><span class="growth-image"><img src="assets/growth-v1/financing.png" alt="" aria-hidden="true"></span><span class="growth-copy"><strong>Выберите финансирование под задачу роста</strong><small>Сопоставляем срок, денежный поток и цель бизнеса</small></span><i aria-hidden="true">↗</i></a>
+            <a class="growth-card" href="article.html?article=marketplace"><span class="growth-image"><img src="assets/growth-v1/marketplace.png" alt="" aria-hidden="true"></span><span class="growth-copy"><strong>Выходите на маркетплейсы через тестовую матрицу</strong><small>Проверяем спрос без лишних остатков и сложной логистики</small></span><i aria-hidden="true">↗</i></a>
+          </div>
+        </div>
+      </section>
+      <section class="development-services" id="developmentServices" aria-labelledby="developmentTitle">
+        <h2 id="developmentTitle">Сервисы для развития бизнеса</h2>
+        <div class="development-grid">
+          <a class="development-hero" href="placeholder.html?page=Бухгалтерия%20ВТБ%20для%20бизнеса">
+            <span class="development-copy"><strong>Бухгалтерия ВТБ для бизнеса</strong><small>Сервис для ведения бухгалтерии самостоятельно или с помощью профессионального бухгалтера на аутсорсе</small><b>от 1 900 ₽</b><em>стоимость тарифа в месяц</em></span>
+            <img src="assets/development-v1/accounting-hero.png" alt="" aria-hidden="true">
+          </a>
+          <a class="development-card" href="placeholder.html?page=Онлайн-отчётность%20в%20госорганы"><span><strong>Онлайн-отчётность<br>в госорганы</strong><small>Создавайте и отправляйте онлайн-отчёты в ФНС, ФСС, Росстат и ПФР</small><b>от 3 200 ₽</b><em>стоимость тарифа в год</em></span><img src="assets/development-v1/online-reporting.png" alt="" aria-hidden="true"></a>
+          <a class="development-card" href="placeholder.html?page=Онлайн-налог%20для%20АУСН"><span><strong>Онлайн-налог для АУСН</strong><small>Подключите сервис и переходите на налоговый режим АУСН в ВТБ. Минимум отчётности и автоматический расчёт налогов</small><b class="free-label">Бесплатно</b></span><img src="assets/development-v1/ausn-tax.png" alt="" aria-hidden="true"></a>
+        </div>
+      </section>
+      <section class="similar-products target-peer-products" id="targetPeerProducts" aria-labelledby="targetPeerTitle" hidden>
+        <h2 id="targetPeerTitle">Компании, похожие на вашу, выбирают</h2>
+        <div class="similar-products-list">
+          <a class="similar-product" href="placeholder.html?page=Банковская%20экспресс-гарантия"><span><img src="assets/similar-v1/express-guarantee.png" alt="" aria-hidden="true"></span><strong>Банковская<br>экспресс-гарантия</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Маркетинговые%20исследования"><span><img src="assets/similar-v1/marketing-research.png" alt="" aria-hidden="true"></span><strong>Маркетинговые<br>исследования</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Бизнес-карты"><span><img src="assets/similar-v1/business-cards.png" alt="" aria-hidden="true"></span><strong>Бизнес-карты</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Бухгалтерия%20ВТБ%20для%20бизнеса"><span><img src="assets/similar-v1/accounting.png" alt="" aria-hidden="true"></span><strong>Бухгалтерия<br>ВТБ для бизнеса</strong></a>
+          <a class="similar-product" href="placeholder.html?page=Проверка%20зарубежного%20партнёра"><span><img src="assets/similar-v1/foreign-partner.png" alt="" aria-hidden="true"></span><strong>Проверка зарубежного<br>партнёра</strong></a>
+        </div>
+      </section>
       </div>
     </section>
   </main>
@@ -91,6 +256,6 @@
   </aside>
 
   <script src="legacy-categories.js?v=20261015-catalog-layout"></script>
-  <script src="app.js?v=20261016-small-images"></script>
+  <script src="app.js?v=20261019-persistent-sections"></script>
 </body>
 </html>
