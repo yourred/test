@@ -473,8 +473,8 @@ function renderCards(){
   document.querySelector('#developmentServices').hidden=mine||!mvp;
   document.querySelector('#similarProducts').hidden=mine||!mvp;
   targetInsights.hidden=mine||!target;
-  targetPeerProducts.hidden=mine||!target;
-  similarTitle.textContent=target?'Вы интересовались':'Компании, похожие на вашу, выбирают';
+  targetPeerProducts.hidden=true;
+  similarTitle.textContent='Компании, похожие на вашу, выбирают';
   document.body.classList.toggle('my-products-view',mine);
   catalogTopActions.hidden=mine||catalogMode!=='products'||mvp;
   catalogBottomActions.hidden=mine||(catalogMode==='products'&&!mvp);
